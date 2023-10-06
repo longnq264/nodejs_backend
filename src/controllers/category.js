@@ -22,6 +22,14 @@ export const getID = async (req, res) => {
     }
 };
 
+export const getProductfromCat = async (req, res) => {
+    try {
+        
+    } catch (error) {
+        
+    }
+}
+
 export const create = async (req, res) => {
     try {
         const body = req.body;
@@ -57,7 +65,9 @@ export const update = async (req, res) => {
             message: "update succesfuly",
             data: category,
         });
-    } catch (error) {}
+    } catch (error) {
+        console.log('Error');
+    }
 };
 
 export const remove = async (req, res) => {
