@@ -18,12 +18,12 @@ app.use("/api", categoryRouter);
 app.use("/api", userRouter);
 
 mongoose
-    .connect("mongodb://localhost:27017/Assignment")
-    .then(() => {
-        console.log("connected");
-    })
-    .catch(() => {
-        console.log("disconnect");
-    });
+  .connect("mongodb://localhost:27017/Assignment")
+  .then(() => {
+    console.log("connected");
+  })
+  .catch(() => {
+    console.log("not connected");
+  });
 
 export const viteNodeApp = app;
