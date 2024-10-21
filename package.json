@@ -1,0 +1,27 @@
+{
+  "name": "nodejs",
+  "version": "1.0.0",
+  "description": "longnq264",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "develop"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/longnq264/nodejs_backend.git"
+  },
+  "keywords": [
+    "nodejs"
+  ],
+  "author": "longnq264",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/longnq264/nodejs_backend/issues"
+  },
+  "homepage": "https://github.com/longnq264/nodejs_backend#readme",
+  "dependencies": {
+    "express": "^4.21.1"
+  }
+}
+
