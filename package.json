@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "develop",
-    "dev": "nodemon src/app.js"
+    "node": "nodemon src/app.js"
   },
   "repository": {
     "type": "git",
@@ -36,3 +36,4 @@
     "nodemon": "^3.1.7"
   }
 }
+

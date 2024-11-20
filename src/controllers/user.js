@@ -1,52 +1,21 @@
-import signinSchema from "../schemas/user.js";
 import User from "../models/user.js";
-import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
 dotenv.config();
-export const signin = async (req, res) => {
-  const body = req.body;
 
+export const getUserProfile = async (req, res) => {
+  const id = req.user.id;
   try {
-    const { error } = signinSchema.validate(body, { abortEarly: false });
-    if (error) {
-      return res.status(400).send({
-        message: error,
-      });
-    }
-    const user = await User.findOne({
-      email: body.email,
-    });
-    const passwordUser = body.password;
-    const passwordDb = user.password;
-
+    const user = await User.findById(id);
+    console.log(user);
     if (!user) {
-      return res.status(400).json({
-        message: "Email already exists",
-      });
+      return res.status(404).json({ message: "User not found" });
     }
-
-    if (passwordDb !== passwordUser) {
-      return res.status(401).json({
-        message: "Incorrect password. Please try again.",
-      });
-    }
-
-    const payload = { id: user.id, username: user.name };
-    const secretKey = process.env.SECRET_KEY;
-    const options = { expiresIn: "1m" };
-
-    const token = jwt.sign(payload, secretKey, options);
-
     res.status(200).send({
-      auth: user,
-      password: passwordUser,
-      message: "Login successful",
-      accessToken: token,
+      message: "Get user success",
+      data: user,
     });
   } catch (error) {
-    res.status(400).send({
-      message: error.message,
-    });
+    res.status(401).json({ message: "Not token provided" });
   }
 };

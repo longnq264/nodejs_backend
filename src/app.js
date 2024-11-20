@@ -1,44 +1,28 @@
+import mongoose from "mongoose";
 import express from "express";
 import cors from "cors";
-import formidable from "formidable";
+import authRouter from "./routers/auth.js";
 import userRouter from "./routers/user.js";
-import mongoose from "mongoose";
 
 const app = express();
 const port = 3030;
+const endpointDb = "poke-db";
 
 app.use(cors());
 
 app.use(express.json());
 
-app.get("/", (req, res) => {
+app.get("/api", (req, res) => {
   res.json({
-    message: "Welcome to backend express!",
+    message: "This is api nodejs !",
   });
 });
 
+app.use("/api", authRouter);
 app.use("/api", userRouter);
 
-app.get("/api/products", (req, res) => {
-  res.json({
-    message: "Welcome to product api",
-  });
-});
-
-// app.post("/api/upload", (req, res, next) => {
-//   const form = formidable({});
-
-//   form.parse(req, (err, fields, files) => {
-//     if (err) {
-//       next(err);
-//       return;
-//     }
-//     res.json({ fields, files });
-//   });
-// });
-
 mongoose
-  .connect("mongodb://localhost:27017/poke-db")
+  .connect(`mongodb://localhost:27017/${endpointDb}`)
   .then(() => {
     console.log("connected");
   })
