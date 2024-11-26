@@ -1,8 +1,8 @@
-#Weapon Store API
+# Weapon Store API
 
-##This is a backend API for managing weapons and categories built using Node.js, Express, and MongoDB.
+## This is a backend API for managing weapons and categories built using Node.js, Express, and MongoDB.
 
-##Installation
+## Installation
 To run the project locally, follow these steps:
 
 1. Clone the repository:
@@ -20,7 +20,7 @@ npm install
 
 npm run node
 
-#API Endpoints
+# API Endpoints
 
 GET /products
 Fetch a list of all products.
