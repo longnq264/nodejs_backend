@@ -12,6 +12,11 @@ const categorySchema = new mongoose.Schema({
     unique: true,
     lowercase: true,
   },
+  status: {
+    type: String,
+    enum: ["collection", "sub-category", "hidden"],
+    default: "sub-category",
+  },
   parentId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Category",
