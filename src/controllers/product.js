@@ -59,20 +59,20 @@ export const getProductByCategory = async (req, res) => {
 
       {
         $graphLookup: {
-          from: "categories", // Tên collection "categories"
-          startWith: "$_id", // Bắt đầu từ _id của danh mục cha
-          connectFromField: "_id", // Nối từ _id
-          connectToField: "parentId", // Nối với parentId
-          as: "allCategories", // Kết quả lưu vào allCategories
+          from: "categories",
+          startWith: "$_id",
+          connectFromField: "_id",
+          connectToField: "parentId",
+          as: "allCategories",
         },
       },
 
       {
         $lookup: {
-          from: "products", // Tên collection "products"
-          localField: "allCategories._id", // Dùng _id từ allCategories
-          foreignField: "category", // Khớp với trường category trong products
-          as: "products", // Kết quả lưu vào products
+          from: "products",
+          localField: "allCategories._id",
+          foreignField: "category",
+          as: "products",
         },
       },
 
