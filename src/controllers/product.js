@@ -26,6 +26,23 @@ export const getId = async (req, res) => {
   }
 };
 
+export const getDisscounted = async (req, res) => {
+  const { limit } = req.query;
+
+  try {
+    const data = await Product.find({
+      isDiscounted: true,
+    }).limit(limit ? parseInt(limit, 10) : 0);
+    console.log(data);
+
+    res.status(200).json({ data });
+  } catch (error) {
+    res
+      .status(400)
+      .json({ message: "Error fetching category data", error: error.message });
+  }
+};
+
 export const queryCategory = async (req, res) => {
   try {
     const { categoryId, limit } = req.query;
@@ -34,12 +51,28 @@ export const queryCategory = async (req, res) => {
     if (!categoryId) {
       return res.status(400).json({ message: "Invalid categoryId format" });
     }
-    const data = await Product.find({
-      category: categoryId,
-    }).limit(limit ? parseInt(limit, 10) : 0);
-    console.log(data);
 
-    res.status(200).json({ data });
+    const catSlug = await Category.findById(categoryId);
+    if (!catSlug) {
+      return res.status(400).json({
+        message: "Category notfound",
+      });
+    }
+    let products = [];
+
+    if (catSlug.parentId === null) {
+      products = await Product.find({
+        category: { $in: catSlug.children },
+      }).populate("category", "name");
+      console.log(products);
+    } else {
+      products = await Product.find({
+        category: categoryId,
+      }).limit(limit ? parseInt(limit, 10) : 0);
+      console.log(products);
+    }
+
+    res.status(200).json({ data: products, category: catSlug });
   } catch (error) {
     res
       .status(400)
@@ -93,51 +126,3 @@ export const getProductByCategory = async (req, res) => {
       .json({ message: "Error fetching category data", error: error.message });
   }
 };
-
-// const results = await Category.aggregate([
-//   // 1. Lọc danh mục gốc
-//   { $match: { _id: categoryId } },
-
-//   // 2. Lấy tất cả danh mục con sử dụng $graphLookup
-//   {
-//     $graphLookup: {
-//       from: "categories", // Collection `categories`
-//       startWith: "$_id", // Bắt đầu từ danh mục gốc
-//       connectFromField: "_id", // Kết nối từ `_id`
-//       connectToField: "parentId", // Liên kết qua `parentId`
-//       as: "allCategories", // Kết quả lưu trong trường `allCategories`
-//     },
-//   },
-
-//   // 3. Gộp danh sách tất cả _id của danh mục gốc và các danh mục con
-//   {
-//     $addFields: {
-//       categoryIds: {
-//         $concatArrays: [["$_id"], "$allCategories._id"],
-//       },
-//     },
-//   },
-
-//   // 4. Dùng $lookup để kết nối với bảng products
-//   {
-//     $lookup: {
-//       from: "products", // Collection `products`
-//       localField: "categoryIds", // So sánh với danh sách `_id` các danh mục
-//       foreignField: "category", // Liên kết qua `category` trong bảng products
-//       as: "products", // Lưu kết quả sản phẩm vào trường `products`
-//     },
-//   },
-
-//   // 5. Chỉ giữ lại danh sách sản phẩm
-//   {
-//     $project: {
-//       _id: 0,
-//       products: 1,
-//     },
-//   },
-// ]);
-
-// if (results.length === 0) {
-//   return res.status(404).json({ message: "No products found" });
-// }
-// res.status(200).json(results[0].products);

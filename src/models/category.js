@@ -22,6 +22,8 @@ const categorySchema = new mongoose.Schema({
     ref: "Category",
     default: null,
   },
+  children: [{ type: mongoose.Schema.Types.ObjectId, ref: "Category" }], // Mảng chứa ObjectId của các danh mục con
+  status: String,
   createdAt: {
     type: Date,
     default: Date.now,
