@@ -6,13 +6,10 @@ import authRouter from "./routers/auth.js";
 import userRouter from "./routers/user.js";
 import productRouter from "./routers/product.js";
 import categoryRouter from "./routers/category.js";
-// import multer from "multer";
 
 const app = express();
 const port = 3030;
 const endpointDb = "poke-db";
-
-// const upload = multer({ dest: "uploads/" });
 
 app.use(cors());
 app.use(morgan("dev"));

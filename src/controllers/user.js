@@ -1,7 +1,53 @@
+import mongoose from "mongoose";
 import User from "../models/user.js";
 import dotenv from "dotenv";
 
 dotenv.config();
+
+export const getAllMember = async (req, res) => {
+  try {
+    const user = await User.find();
+
+    if (!user) {
+      return res.status(400).json({
+        message: "Cannot get list User!",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Success get api all member",
+      user: user,
+    });
+  } catch (error) {
+    res.status(401).json({ message: "Not token provided" });
+  }
+};
+
+export const getMemberDetail = async (req, res) => {
+  const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({
+      message: "Invalid User ID!",
+    });
+  }
+  try {
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).json({
+        message: "Cannot get User Detail!",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Success get api all member",
+      user: user,
+    });
+  } catch (error) {
+    console.error("Error fetching user detail:", error);
+    res.status(500).json({ message: "Internal server error." });
+  }
+};
 
 export const getUserProfile = async (req, res) => {
   const id = req.user.id;
@@ -18,6 +64,15 @@ export const getUserProfile = async (req, res) => {
   } catch (error) {
     res.status(401).json({ message: "Not token provided" });
   }
+};
+
+export const updateProfile = async (req, res) => {
+  const { id } = req.params;
+  const data = req.body;
+  res.status(200).json({
+    message: "Message",
+    data: `Success get ${id} - ${data}`,
+  });
 };
 
 export const uploadAvatar = async (req, res) => {

@@ -13,8 +13,8 @@ export const getAll = async (req, res) => {
 };
 
 export const getId = async (req, res) => {
+  const { id } = req.query;
   try {
-    const { id } = req.query;
     console.log(id);
     const data = await Product.findById(id);
     res.status(200).json({
@@ -32,6 +32,22 @@ export const getDisscounted = async (req, res) => {
   try {
     const data = await Product.find({
       isDiscounted: true,
+    }).limit(limit ? parseInt(limit, 10) : 0);
+    console.log(data);
+
+    res.status(200).json({ data });
+  } catch (error) {
+    res
+      .status(400)
+      .json({ message: "Error fetching category data", error: error.message });
+  }
+};
+
+export const getBestselling = async (req, res) => {
+  const limit = 4;
+  try {
+    const data = await Product.find({
+      featuredTag: "bestSeller",
     }).limit(limit ? parseInt(limit, 10) : 0);
     console.log(data);
 
@@ -125,4 +141,8 @@ export const getProductByCategory = async (req, res) => {
       .status(400)
       .json({ message: "Error fetching category data", error: error.message });
   }
+};
+
+export const createProduct = async (req, res) => {
+  res.status(200).json({ message: "success create product" });
 };

@@ -1,6 +1,7 @@
 import express from "express";
 import {
   getAll,
+  getBestselling,
   getDisscounted,
   getId,
   getProductByCategory,
@@ -12,6 +13,7 @@ const router = express.Router();
 router.get("/products", getAll);
 router.get("/products/query", queryCategory);
 router.get("/products/disscount", getDisscounted);
+router.get("/products/bestselling", getBestselling);
 router.get("/product", getId);
 router.get("/products/catlist", getProductByCategory);
 
